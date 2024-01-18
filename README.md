@@ -17,8 +17,8 @@
 └── init_sql_scripts
     └── init.sql
 ```
-## Create two dockerfiles for Backend and Frontend 
-- backend:
+## Create two dockerfiles for Backend and Frontend directories
+- backend/Dockerfile:
 ```bash
 # choose base image 
 FROM node:10-alpine
@@ -35,7 +35,7 @@ EXPOSE 3001
 # actiavtes application 
 CMD [ "node","index.js" ] 
 ```
-- frontend:
+- frontend/Dockerfile:
 ```bash
 # choose base image 
 FROM node:10-alpine
@@ -53,9 +53,19 @@ EXPOSE 3000
 CMD [ "node", "index.js" ]
 
 ```
-## Create a ".env" file in the root directory to store sensitve information that will allow you to chnage using docker compose file
+## Create a ".env" file in the root directory to store sensitve information that will allow you to change using docker compose file
+```bash
+touch .env
+```
+- Inside the .env file you need 4 variables
+```bash
+DB_NAME=
+URL=
+FRONT_END_PORT=
+BACKEND_PORT=
+```
 
-## Create docker-compose.yml file
+## Create docker-compose.yml file inside root directory
 ```bash
 version: "3"
 services:
