@@ -1,4 +1,22 @@
 # Docker deployment of Node.js 3 Tier website
+## final product on how direcory tree should look 
+```bash
+.
+├── README.md
+├── backend
+│   ├── Dockerfile
+│   ├── index.js
+│   ├── package-lock.json
+│   └── package.json
+├── docker-compose.yml
+├── frontend
+│   ├── Dockerfile
+│   ├── index.js
+│   ├── package-lock.json
+│   └── package.json
+└── init_sql_scripts
+    └── init.sql
+```
 ## Create two dockerfiles for Backend and Frontend 
 - backend:
 ```bash
