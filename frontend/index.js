@@ -1,9 +1,11 @@
 const express = require('express');
 const request = require('request');
+const { config } = require('dotenv');
 
 const app = express();
-const port = 3000;
-const restApiUrl = "http://localhost:3001/data";
+
+const port = parseInt(process.env.FRONT_END_PORT);
+const restApiUrl = process.env.URL;
 
 app.get('/', function(req, res) {
     request(

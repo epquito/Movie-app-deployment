@@ -1,0 +1,62 @@
+version: '3'
+services:
+  frontend:
+    container_name: "frontend"
+    build:
+      context: frontend
+    ports:
+      - "3000:3000"
+    environment:
+      - URL=http://backend:3001/data
+      - FRONT_END_PORT=3000
+    networks:
+      - movie-networks
+    depends_on:
+      - db
+      - backend
+  backend:
+    container_name: "backend"
+    build:
+      context: backend
+    ports:
+      - "3001:3001"
+    environment:
+      - DB_NAME=postgres://edwin:movie@2023@db:5432/movies
+      - BACKEND_PORT=3001
+    networks:
+      - movie-networks
+    depends_on:
+      db:
+        condition: service_healthy
+  db:
+    image: "postgres:11.2-alpine"
+    container_name: "database"
+    ports:
+      - "5432:5432"
+    networks:
+      - movie-networks
+    environment:
+      - POSTGRES_USER=edwin
+      - POSTGRES_PASSWORD=movie@2023
+      - POSTGRES_DB=movies
+    healthcheck:
+      test: ["CMD","pg_isready","-q","-d","movies","-U","edwin"]
+      timeout: 20s
+      retries: 10
+    volumes:
+      - ./init_sql_scripts:/docker-entrypoint-initdb.d 
+      - movies-postgres:/var/lib/postgresql/data
+      - movies-postgres-config:/etc/postgresql
+
+
+volumes:
+  movies-postgres:
+  movies-postgres-config:
+
+networks:
+  movie-networks:
+    name: movie-networks
+    driver: bridge
+    
+    
+    

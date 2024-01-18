@@ -1,10 +1,10 @@
 const express = require("express");
 const { Pool, Client } = require("pg");
 const app = express();
-const port = 3001;
+const port = parseInt(process.env.BACKEND_PORT);
 
 const pool = new Pool({
-  connectionString: "postgres://admin:zxPaZx2LvYu@127.0.0.0:3306/movie_database",
+  connectionString: process.env.DB_NAME
 });
 
 app.get("/data", function (req, res) {
