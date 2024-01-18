@@ -2,58 +2,76 @@ version: "3"
 services:
   frontend:
     container_name: "frontend"
+    # executes dockerfile within directory 
     build:
       context: frontend
+    # opens up port 
     ports:
       - "3000:3000"
+    # changes env values
     environment:
       - URL=http://backend:3001/data
       - FRONT_END_PORT=3000
+    # select specific network bridge
     networks:
       - movie-networks
+    # won't start until db and backend are created
     depends_on:
       - db
       - backend
   backend:
     container_name: "backend"
+    # executes docker file within directory
     build:
       context: backend
+    # open ports
     ports:
       - "3001:3001"
+    # changes env values
     environment:
       - DB_NAME=postgres://edwin:movie@2023@db:5432/movies
       - BACKEND_PORT=3001
+    # selects specific network bridge
     networks:
       - movie-networks
+    # waits unitil db is healthy
     depends_on:
       db:
         condition: service_healthy
   db:
+    # select base image for db
     image: "postgres:11.2-alpine"
     container_name: "database"
+    # open ports
     ports:
       - "5432:5432"
+    # select cutom network
     networks:
       - movie-networks
+    # creates db with the env stated below
     environment:
       - POSTGRES_USER=edwin
       - POSTGRES_PASSWORD=movie@2023
       - POSTGRES_DB=movies
+    # runs a health check to make ure postgresql is running and the database is created and user
     healthcheck:
       test: ["CMD","pg_isready","-q","-d","movies","-U","edwin"]
       timeout: 20s
       retries: 10
     volumes:
+        # bind mounts from local machine directory stated to the container and executes the script 
       - ./init_sql_scripts:/docker-entrypoint-initdb.d 
+        # uses th volume name and mounts the postgresql data /config to ensure data persistancy
       - movies-postgres:/var/lib/postgresql/data
       - movies-postgres-config:/etc/postgresql
 
-
+# volumes created do be mounted for db 
 volumes:
   movies-postgres:
   movies-postgres-config:
 
 networks:
+# created custom bridge network 
   movie-networks:
     name: movie-networks
     driver: bridge
