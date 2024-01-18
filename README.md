@@ -1,5 +1,5 @@
 # Docker deployment of Node.js 3 Tier website
-## final product on how direcory tree should look 
+## Final product on how direcory tree should look 
 ```bash
 .
 ├── README.md
