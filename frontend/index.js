@@ -1,6 +1,5 @@
 const express = require('express');
 const request = require('request');
-const { config } = require('dotenv');
 
 const app = express();
 

@@ -34,6 +34,7 @@ services:
     # selects specific network bridge
     networks:
       - movie-networks
+      - movie-db
     # waits unitil db is healthy
     depends_on:
       db:
@@ -47,7 +48,7 @@ services:
       - "5432:5432"
     # select cutom network
     networks:
-      - movie-networks
+      - movie-db
     # creates db with the env stated below
     environment:
       - POSTGRES_USER=edwin
@@ -72,6 +73,10 @@ volumes:
 
 networks:
 # created custom bridge network 
+  movie-db:
+    name: movie-db
+    driver: bridge
+
   movie-networks:
     name: movie-networks
     driver: bridge
