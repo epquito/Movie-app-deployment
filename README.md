@@ -1,6 +1,24 @@
 # Docker deployment of Node.js 3 Tier website
-## Create two dockerfiles for Backend and Frontend 
-- backend:
+## Final product on how direcory tree should look 
+```bash
+.
+├── README.md
+├── backend
+│   ├── Dockerfile
+│   ├── index.js
+│   ├── package-lock.json
+│   └── package.json
+├── docker-compose.yml
+├── frontend
+│   ├── Dockerfile
+│   ├── index.js
+│   ├── package-lock.json
+│   └── package.json
+└── init_sql_scripts
+    └── init.sql
+```
+## Create two dockerfiles for Backend and Frontend directories
+- backend/Dockerfile:
 ```bash
 # choose base image 
 FROM node:10-alpine
@@ -17,7 +35,7 @@ EXPOSE 3001
 # actiavtes application 
 CMD [ "node","index.js" ] 
 ```
-- frontend:
+- frontend/Dockerfile:
 ```bash
 # choose base image 
 FROM node:10-alpine
@@ -35,9 +53,19 @@ EXPOSE 3000
 CMD [ "node", "index.js" ]
 
 ```
-## Create a ".env" file in the root directory to store sensitve information that will allow you to chnage using docker compose file
+## Create a ".env" file in the root directory to store sensitve information that will allow you to change using docker compose file
+```bash
+touch .env
+```
+- Inside the .env file you need 4 variables
+```bash
+DB_NAME=
+URL=
+FRONT_END_PORT=
+BACKEND_PORT=
+```
 
-## Create docker-compose.yml file
+## Create docker-compose.yml file inside root directory
 ```bash
 version: "3"
 services:
@@ -119,7 +147,7 @@ networks:
 ```
 - Removed environment information so it's easier to copy and paste 
 
-##  execute the docker compose file you need the following comamnd
+##  Execute the docker compose file you need the following comamnd
 ```bash
 docker compose up --build
 ```
@@ -129,11 +157,11 @@ docker compose down --volumes
 ```
 ## Once all dockerfiles are done and provisioned you can start on the CI portion with github actions 
 
-## create a new directory within the root directory and name it ".github"
+- Create a new directory within the root directory and name it ".github"
 
-## within the knewly created directory create a new directory "workflows" that will stored your github actions yml file
+- Within the knewly created directory create a new directory "workflows" that will stored your github actions yml file
 
-## Inside workflows create a file "name_of_file.yml"
+- Inside workflows create a file "name_of_file.yml"
 - name_of_file.yml:
 ```bash
 name: Build and Push Docker Image
@@ -185,7 +213,7 @@ jobs:
           push: true
           tags: ${{ env.DOCKER_USERNAME }}/movie:frontend
 ```
-## to execute this github actions you need to push to your remote repo
+## To execute this github actions you need to push to your remote repo
 ```bash
 git add .
 git commit -m "test1"
