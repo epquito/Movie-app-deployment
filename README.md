@@ -147,7 +147,7 @@ networks:
 ```
 - Removed environment information so it's easier to copy and paste 
 
-##  Execute the docker compose file you need the following comamnd
+##  Execute the docker compose file you need the following command
 ```bash
 docker compose up --build
 ```
@@ -213,6 +213,13 @@ jobs:
           push: true
           tags: ${{ env.DOCKER_USERNAME }}/movie:frontend
 ```
+## Before commiting and pushing to your remote repository on github make sure you have added repository secrets within the repo.
+- Go to repo
+- click on settings
+- select "Secrets and variables "
+- Select Actions from the drop down menu 
+- Click on "New repository secret"
+
 ## To execute this github actions you need to push to your remote repo
 ```bash
 git add .
